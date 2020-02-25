@@ -4,21 +4,11 @@ var cors = require ('cors');
 app.use(cors());
 app.options('*', cors());
 var port     = process.env.PORT || 8080;
-var bodyParser   = require('body-parser');
 var con = require('mssql');
 var config = require('./db_config');
-// app.use(bodyParser()); // get information from html forms
-// app.use(express.json());       // to support JSON-encoded bodies
-// app.use(express.urlencoded()); // to support URL-encoded bodies
 
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-  }));
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // var jsonParser = bodyParser.json()
 
