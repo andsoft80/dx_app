@@ -1,5 +1,5 @@
 {
-  "name": "dx_app",
+  "name": "react_client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,13 +8,21 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "node-sass": "^4.11.0",
+    "react-router-dom": "^5.0.0",
+    "react-app-polyfill": "^1.0.0",
+    "devextreme": "19.2-stable",
+    "devextreme-themebuilder": "19.2-stable",
+    "devextreme-react": "19.2-stable"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-themes": "devextreme build",
+    "postinstall": "npm run build-themes"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,5 +38,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "devextreme-cli": "1.1.10"
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "author": "rohan",
+  "license": "ISC"
 }
