@@ -1,3 +1,3 @@
 export default {
-  title: 'ANDS_app'
+  title: 'Rohan_app'
 };

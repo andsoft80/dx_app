@@ -7,6 +7,9 @@ import appInfo from './app-info';
 import { navigation } from './app-navigation';
 import routes from './app-routes';
 import './App.scss';
+import be_conf from './be_config';
+import axios from 'axios';
+
 import './dx-styles.scss';
 import { Footer, LoginForm } from './components';
 import {
@@ -96,8 +99,38 @@ class App extends Component {
     });
   }
 
-  logIn = () => {
-    this.setState({ loggedIn: true });
+
+
+  logIn = (email,password) => {
+    var int = this;
+    axios.post(be_conf.server + '/signin', {
+      email: email,
+      password: password
+    })
+    .then(function (response) {
+      // alert(response.data);
+      if(response.data==='fail'){
+        alert('Login fail!');
+
+      }
+      else if(response.data.indexOf('err')>-1){
+        alert(JSON.stringify(response.data));
+      }
+      else{
+
+        var token = response.data;
+        int.setState({ loggedIn: true });
+        
+      }
+    })
+    .catch(function (error) {
+      
+      alert(JSON.stringify(error));
+    });
+    
+    
+    
+    
   };
 
   logOut = () => {

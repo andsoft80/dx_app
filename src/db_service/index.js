@@ -58,6 +58,7 @@ app.post('/signin', function (req, res) {
 
     var email = req.body.email;
     var password = req.body.password;
+    console.log(JSON.stringify(req.body));
     var sqlStr = '';
 
     if (email && password) {
@@ -188,6 +189,9 @@ app.post('/table/:tableName/action/:action/idName/:idName', function (req, res) 
         if (value && now > value.exp) {
             res.end("auth_expired");
         }
+        else if(!value){
+            res.end("need_auth");
+        }
         else {
             api_impl(req, res);
         }
@@ -197,6 +201,29 @@ app.post('/table/:tableName/action/:action/idName/:idName', function (req, res) 
 
 
 });
+
+app.post('/checkauth', function (req, res) {
+
+    getTokenFromHeader(req).then((value) => {
+        var now = Math.floor(Date.now() / 1000);
+        // console.log(Math.floor(Date.now() / 1000));
+        if (value && now > value.exp) {
+            res.end("auth_expired");
+        }
+        else if(!value){
+            res.end("need_auth");
+        }
+        else {
+            res.end("checked");
+        }
+    });
+
+
+
+
+});
+
+
 
 //////////////////////////////////////////////
 

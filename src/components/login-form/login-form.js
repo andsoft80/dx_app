@@ -30,7 +30,7 @@ export default class LoginForm extends React.Component {
           <TextBox
             value={login}
             onValueChanged={this.loginChanged}
-            placeholder={'Login'}
+            placeholder={'Email'}
             width={'100%'}
           >
             <Validator>
@@ -62,9 +62,9 @@ export default class LoginForm extends React.Component {
             width={'100%'}
           />
         </div>
-        <div className={'dx-field'}>
+        {/* <div className={'dx-field'}>
           <Link to={'/recovery'} onClick={e => e.preventDefault()}>Forgot password ?</Link>
-        </div>
+        </div> */}
         <div className={'dx-field'}>
           <Button type={'normal'} text={'Create an account'} width={'100%'} />
         </div>
