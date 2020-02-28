@@ -8,7 +8,7 @@ import DataGrid, {
   Lookup
 } from 'devextreme-react/data-grid';
 
-export default class extends React.Component {
+class Data extends React.Component {
 
   dataSource = {
     store: {
@@ -110,3 +110,4 @@ export default class extends React.Component {
     );
   }
 };
+export default Data;

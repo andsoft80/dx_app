@@ -7,6 +7,11 @@ import CheckBox from 'devextreme-react/check-box';
 import './login-form.scss';
 import appInfo from '../../app-info';
 import { Link } from 'react-router-dom';
+import be_conf from './../../be_config';
+import axios from 'axios';
+import Auth from './../../Authcontrol';
+import logo from './../../background.jpg';
+
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -14,16 +19,22 @@ export default class LoginForm extends React.Component {
 
     this.state = {
       login: '',
-      password: ''
+      password: '',
+      logo: '',
+      color: ''
     };
   }
 
   render() {
     const { login, password } = this.state;
     return (
-      <ValidationGroup>
-        <div className={'login-header'}>
-          <div className={'title'}>{appInfo.title}</div>
+      <div style = {{backgroundImage:"url("+{logo}+")"}}>
+      <ValidationGroup >
+        <div className={'login-header'} >
+          {/* <div className={'title'}>{appInfo.title}</div> */}
+
+          <img src={be_conf.server + '/logo192.png'} style={{ height: '100px' }} />
+
           <div>Sign In to your account</div>
         </div>
         <div className={'dx-field'}>
@@ -69,7 +80,23 @@ export default class LoginForm extends React.Component {
           <Button type={'normal'} text={'Create an account'} width={'100%'} />
         </div>
       </ValidationGroup>
+      </div>
     );
+  }
+
+  componentDidMount() {
+    var int = this;
+    axios.post(be_conf.server + '/userinfo', {}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
+      .then(function (response) {
+        // alert(JSON.stringify(response));
+        if (response.data) {
+          int.setState({
+            logo: response.data.data.logo
+          });
+        }
+      })
+
+
   }
 
   loginChanged = e => {

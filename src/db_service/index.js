@@ -8,6 +8,7 @@ var con = require('mssql');
 var config = require('./db_config');
 var jwt = require('express-jwt');
 var jwt_sign = require('jsonwebtoken');
+app.use(express.static('assets'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -25,13 +26,14 @@ console.log('The magic happens on port ' + port);
 
 async function getTokenFromHeader(req) {
     var token = '';
+    
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
         token = req.headers.authorization.split(' ')[1];
 
     }
     let promise = new Promise((resolve, reject) => {
         jwt_sign.verify(token, 'secret', function (err, decoded) {
-
+            console.log(decoded)
             resolve(decoded);
 
 
@@ -62,7 +64,7 @@ app.post('/signin', function (req, res) {
     var sqlStr = '';
 
     if (email && password) {
-        sqlStr = "select * from Employee where Email = '" + email + "' and Password = '" + password + "'";
+        sqlStr = "select Employee.*, Company.Logo, Company.Color1 from Employee left join Company on Company.CompanyID = Employee.EmployeeID where Email = '" + email + "' and Password = '" + password + "'";
 
         new con.Request().query(sqlStr, function (err, result) {
 
@@ -73,15 +75,22 @@ app.post('/signin', function (req, res) {
                 res.end("fail");
             }
             else {
+
                 const data = {
                     _id: result.recordset[0].EmployeeID,
                     name: result.recordset[0].UserName,
-                    email: result.recordset[0].Email
+                    email: result.recordset[0].Email,
+                    logo: result.recordset[0].Logo,
+                    color: result.recordset[0].Color1
                 };
                 const signature = 'secret';
                 const expiration = '6h';
 
                 res.send(jwt_sign.sign({ data, }, signature, { expiresIn: expiration }));
+
+
+
+
             }
 
         });
@@ -95,6 +104,8 @@ app.post('/signin', function (req, res) {
 
 
 });
+
+
 
 
 /////////////universal api//////////////////////////////////
@@ -189,12 +200,30 @@ app.post('/table/:tableName/action/:action/idName/:idName', function (req, res) 
         if (value && now > value.exp) {
             res.end("auth_expired");
         }
-        else if(!value){
+        else if(value===''){
             res.end("need_auth");
         }
         else {
             api_impl(req, res);
         }
+    });
+
+
+
+
+});
+
+
+
+
+
+//////////////////////////////////////////////
+
+app.post('/userinfo', function (req, res) {
+
+    getTokenFromHeader(req).then(function(response) {
+        
+        res.end(JSON.stringify(response));
     });
 
 
@@ -210,7 +239,7 @@ app.post('/checkauth', function (req, res) {
         if (value && now > value.exp) {
             res.end("auth_expired");
         }
-        else if(!value){
+        else if(value===''){
             res.end("need_auth");
         }
         else {
@@ -222,10 +251,3 @@ app.post('/checkauth', function (req, res) {
 
 
 });
-
-
-
-//////////////////////////////////////////////
-
-
-

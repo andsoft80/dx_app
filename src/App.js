@@ -9,6 +9,7 @@ import routes from './app-routes';
 import './App.scss';
 import be_conf from './be_config';
 import axios from 'axios';
+import Auth from './Authcontrol';
 
 import './dx-styles.scss';
 import { Footer, LoginForm } from './components';
@@ -58,20 +59,28 @@ class App extends Component {
     };
 
     this.userMenuItems = [
-      {
-        text: 'Profile',
-        icon: 'user'
-      },
+      // {
+      //   text: 'Profile',
+      //   icon: 'user'
+      // },
       {
         text: 'Logout',
         icon: 'runner',
         onClick: this.logOut
       }
     ];
+
+
   }
 
   componentDidMount() {
     subscribe(this.screenSizeChanged);
+    var int = this;
+    Auth.isUserAuthenticated().then((value)=>{
+      
+      int.setState({ loggedIn: value });
+    });
+
   }
 
   componentWillUnmount() {
@@ -81,8 +90,10 @@ class App extends Component {
   render() {
     const { loggedIn } = this.state;
 
+
     return (
       <div className={`app ${this.state.screenSizeClass}`}>
+        
         <Router>{loggedIn ? <AuthPage userMenuItems={this.userMenuItems} /> : <NotAuthPage logIn={this.logIn} />}</Router>
       </div>
     );
@@ -119,6 +130,7 @@ class App extends Component {
       else{
 
         var token = response.data;
+        Auth.authenticateUser(token);
         int.setState({ loggedIn: true });
         
       }
@@ -135,6 +147,7 @@ class App extends Component {
 
   logOut = () => {
     this.setState({ loggedIn: false });
+    Auth.deauthenticateUser();
   };
 }
 

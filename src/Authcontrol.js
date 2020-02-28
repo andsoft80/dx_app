@@ -6,11 +6,23 @@ class Auth {
         localStorage.setItem('token_rohan', token)
     }
 
-    static isUserAuthenticated() {
-        
-        return localStorage.getItem('token_rohan') !== null
-    }
+    static async isUserAuthenticated() {
+        var token = localStorage.getItem('token_rohan');
+        const response = await axios.post(be_conf.server + '/checkauth',{} ,{ headers: { "Authorization": 'Bearer ' + token } });
 
+        if (token !== null) {
+            
+
+            if (response.data === 'checked') {
+                return true;
+            }
+            else return false;
+        }
+        else {
+            
+            return false;
+        }
+    }
     static deauthenticateUser() {
         localStorage.removeItem('token_rohan')
     }
