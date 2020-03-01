@@ -4,14 +4,23 @@ import Button from 'devextreme-react/button';
 import UserPanel from '../user-panel/user-panel';
 import './header.scss';
 import { Template } from 'devextreme-react/core/template';
+import Lang from './../../Langcontrol';
+import { NavLink } from "react-router-dom";
+import ReactDOM from 'react-dom';
+import App from './../../App';
 
 
+function ch_lang(lang) {
+  Lang.setLang(lang)
+  window.location.reload();
 
 
-export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems,backgroundColor }) => (
-  
+}
+
+export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroundColor }) => (
+
   <header className={'header-component'} >
-    <Toolbar className={'header-toolbar'} style = {{backgroundColor:backgroundColor}}>
+    <Toolbar className={'header-toolbar'} style={{ backgroundColor: backgroundColor }}>
       <Item
         visible={menuToggleEnabled}
         location={'before'}
@@ -26,6 +35,7 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems,background
         text={title}
         visible={!!title}
       />
+
       <Item
         location={'after'}
         locateInMenu={'auto'}
@@ -39,6 +49,41 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems,background
         >
           <UserPanel menuItems={userMenuItems} menuMode={'context'} />
         </Button>
+      </Item>
+      <Item
+        location={'after'}
+        locateInMenu={'auto'}
+        menuItemTemplate={'userPanelTemplate'}
+      >
+        
+        <Button
+
+          width={30}
+          height={30}
+          stylingMode={'text'}
+          style={{ paddingTop: 10 }}
+          onClick={() => ch_lang('en')}
+
+        >
+          en
+        </Button>
+      </Item>
+      <Item
+        location={'after'}
+        locateInMenu={'auto'}
+        menuItemTemplate={'userPanelTemplate'}
+      >
+        
+        <Button
+          onClick={() => ch_lang('ar')}
+          width={30}
+          height={30}
+          stylingMode={'text'}
+          style={{ paddingTop: 10 }}
+        >
+          ar
+        </Button>
+
       </Item>
       <Template name={'userPanelTemplate'}>
         <UserPanel menuItems={userMenuItems} menuMode={'list'} />

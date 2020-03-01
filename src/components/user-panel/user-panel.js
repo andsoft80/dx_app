@@ -11,7 +11,7 @@ export default class UserPanel extends React.Component {
     super(props);
 
     this.state = {
-      userName : ''
+      userName: ''
     };
 
 
@@ -20,13 +20,15 @@ export default class UserPanel extends React.Component {
   }
   componentDidMount() {
     var int = this;
-    axios.post(be_conf.server + '/userinfo',{},{ headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
-    .then(function (response) {
-      // alert(JSON.stringify(response));
-      int.setState({
-        userName: response.data.data.name
-      });
-    })
+    axios.post(be_conf.server + '/userinfo', {}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
+      .then(function (response) {
+        // alert(JSON.stringify(response));
+        if (response.data.data) {
+          int.setState({
+            userName: response.data.data.name
+          });
+        }
+      })
 
 
   }
@@ -38,7 +40,7 @@ export default class UserPanel extends React.Component {
           <div className={'image-container'}>
             <div className={'user-image'} />
           </div>
-    <div className={'user-name'}>{this.state.userName}</div>
+          <div className={'user-name'}>{this.state.userName}</div>
         </div>
 
         {menuMode === 'context' && (

@@ -1,11 +1,13 @@
+import locale from './locale'
+import Lang from './Langcontrol'
 export const navigation = [
   {
-    text: 'Home',
+    text: locale.Home[Lang.getLang()],
     path: '/home',
     icon: 'home'
   },
   {
-    text: 'Examples',
+    text: locale.Directories[Lang.getLang()],
     icon: 'folder',
     items: [
       // {
@@ -13,7 +15,7 @@ export const navigation = [
       //   path: '/profile'
       // },
       {
-        text: 'Display Data',
+        text: locale.Employee[Lang.getLang()],
         path: '/display-data'
       }
     ]

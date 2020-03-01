@@ -20,7 +20,7 @@ class SideNavOuterToolbar extends React.Component {
     this.state = {
       menuOpened: sizes()['screen-large'],
       temporaryMenuOpened: false,
-      backgroundColor: 'blue',
+      backgroundColor: 'white',
       ...this.drawerConfig
     };
 
@@ -40,7 +40,7 @@ class SideNavOuterToolbar extends React.Component {
     return (
       <div className={'side-nav-outer-toolbar'} >
         <Header
-          
+
           className={'layout-header'}
           menuToggleEnabled
           userMenuItems={userMenuItems}
@@ -48,14 +48,14 @@ class SideNavOuterToolbar extends React.Component {
             this.setState({ menuOpened: !this.state.menuOpened })
           }
           title={title}
-          backgroundColor = {this.state.backgroundColor}
-          
+          backgroundColor={this.state.backgroundColor}
+
         />
 
         <Drawer
-        
+
           className={'layout-body' + this.menuPatch.cssClass}
-          
+
           position={'before'}
           closeOnOutsideClick={this.closeDrawer}
           openedStateMode={menuMode}
@@ -96,18 +96,20 @@ class SideNavOuterToolbar extends React.Component {
 
   componentDidMount() {
     subscribe(this.updateDrawer);
-    
-      var int = this;
-      axios.post(be_conf.server + '/userinfo',{},{ headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
+
+    var int = this;
+    axios.post(be_conf.server + '/userinfo', {}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
       .then(function (response) {
         // alert(JSON.stringify(response));
-        int.setState({
-          backgroundColor: response.data.data.color
-        });
+        if (response.data.data) {
+          int.setState({
+            backgroundColor: response.data.data.color
+          });
+        }
       })
-  
-  
-    
+
+
+
 
 
 

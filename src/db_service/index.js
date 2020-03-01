@@ -29,11 +29,11 @@ async function getTokenFromHeader(req) {
     
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
         token = req.headers.authorization.split(' ')[1];
-
+        // console.log(token)
     }
     let promise = new Promise((resolve, reject) => {
         jwt_sign.verify(token, 'secret', function (err, decoded) {
-            console.log(decoded)
+            
             resolve(decoded);
 
 
@@ -197,14 +197,12 @@ app.post('/table/:tableName/action/:action/idName/:idName', function (req, res) 
     getTokenFromHeader(req).then((value) => {
         var now = Math.floor(Date.now() / 1000);
         // console.log(Math.floor(Date.now() / 1000));
-        if (value && now > value.exp) {
-            res.end("auth_expired");
-        }
-        else if(value===''){
+        if(value===undefined){
             res.end("need_auth");
         }
         else {
             api_impl(req, res);
+            
         }
     });
 
@@ -234,12 +232,10 @@ app.post('/userinfo', function (req, res) {
 app.post('/checkauth', function (req, res) {
 
     getTokenFromHeader(req).then((value) => {
-        var now = Math.floor(Date.now() / 1000);
+        // var now = Math.floor(Date.now() / 1000);
         // console.log(Math.floor(Date.now() / 1000));
-        if (value && now > value.exp) {
-            res.end("auth_expired");
-        }
-        else if(value===''){
+
+        if(value===undefined){
             res.end("need_auth");
         }
         else {

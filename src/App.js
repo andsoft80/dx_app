@@ -10,6 +10,8 @@ import './App.scss';
 import be_conf from './be_config';
 import axios from 'axios';
 import Auth from './Authcontrol';
+import Lang from './Langcontrol';
+import locale from './locale';
 
 import './dx-styles.scss';
 import { Footer, LoginForm } from './components';
@@ -18,11 +20,12 @@ import {
   SingleCard
 } from './layouts';
 import { sizes, subscribe, unsubscribe } from './utils/media-query';
+import logo from './background.jpg';
 
 const LoginContainer = ({ logIn }) => <LoginForm onLoginClick={logIn} />;
 
 const NotAuthPage = (props) => (
-  <SingleCard>
+  <SingleCard >
     <Route render={() => <LoginContainer {...props} />} />
   </SingleCard>
 );
@@ -52,7 +55,7 @@ const AuthPage = (props) => (
 class App extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       loggedIn: false,
       screenSizeClass: this.getScreenSizeClass()
@@ -64,7 +67,7 @@ class App extends Component {
       //   icon: 'user'
       // },
       {
-        text: 'Logout',
+        text: locale.Logout[Lang.getLang()],
         icon: 'runner',
         onClick: this.logOut
       }
@@ -75,11 +78,17 @@ class App extends Component {
 
   componentDidMount() {
     subscribe(this.screenSizeChanged);
+
+
+
     var int = this;
-    Auth.isUserAuthenticated().then((value)=>{
-      
+    Auth.isUserAuthenticated().then((value) => {
+
       int.setState({ loggedIn: value });
     });
+    if(!Lang.getLang()){
+      Lang.setLang('en');
+    }
 
   }
 
@@ -90,13 +99,26 @@ class App extends Component {
   render() {
     const { loggedIn } = this.state;
 
+    if (!loggedIn) {
+      return (
 
-    return (
-      <div className={`app ${this.state.screenSizeClass}`}>
-        
-        <Router>{loggedIn ? <AuthPage userMenuItems={this.userMenuItems} /> : <NotAuthPage logIn={this.logIn} />}</Router>
-      </div>
-    );
+        <div className={`app ${this.state.screenSizeClass}`} style={{ backgroundImage: "url('" + be_conf.server + "/background.jpg')", backgroundSize: 'cover' }}>
+
+          <Router>{loggedIn ? <AuthPage userMenuItems={this.userMenuItems} /> : <NotAuthPage logIn={this.logIn} />}</Router>
+        </div>
+
+      );
+    }
+    else {
+      return (
+
+        <div className={`app ${this.state.screenSizeClass}`} >
+
+          <Router>{loggedIn ? <AuthPage userMenuItems={this.userMenuItems} /> : <NotAuthPage logIn={this.logIn} />}</Router>
+        </div>
+
+      );
+    }
   }
 
   getScreenSizeClass() {
@@ -112,37 +134,52 @@ class App extends Component {
 
 
 
-  logIn = (email,password) => {
+  logIn = (email, password) => {
     var int = this;
     axios.post(be_conf.server + '/signin', {
       email: email,
       password: password
     })
-    .then(function (response) {
-      // alert(response.data);
-      if(response.data==='fail'){
-        alert('Login fail!');
+      .then(function (response) {
+        // alert(response.data);
+        if (response.data === 'fail') {
+          alert('Login fail!');
 
-      }
-      else if(response.data.indexOf('err')>-1){
-        alert(JSON.stringify(response.data));
-      }
-      else{
+        }
+        else if (response.data.indexOf('err') > -1) {
+          alert(JSON.stringify(response.data));
+        }
+        else {
 
-        var token = response.data;
-        Auth.authenticateUser(token);
-        int.setState({ loggedIn: true });
-        
-      }
-    })
-    .catch(function (error) {
-      
-      alert(JSON.stringify(error));
-    });
-    
-    
-    
-    
+          var token = response.data;
+          Auth.authenticateUser(token);
+          
+
+
+          axios.post(be_conf.server + '/userinfo', {}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
+            .then(function (response) {
+              var dateStr = new Date();
+              
+              // var utcTime = new Date(dt);
+              // var dateStr = utcTime.toJSON();
+              // alert(dateStr);
+              // utcTime = new Date(utcTime);
+              axios.post(be_conf.server + '/table/Employee/action/put/idName/EmployeeID', { "EmployeeID": response.data.data._id, "LastSignIn": dateStr }, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
+              int.setState({ loggedIn: true });
+            })
+
+
+
+        }
+      })
+      .catch(function (error) {
+
+        alert(JSON.stringify(error));
+      });
+
+
+
+
   };
 
   logOut = () => {

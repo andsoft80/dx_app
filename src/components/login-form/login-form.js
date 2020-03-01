@@ -10,7 +10,8 @@ import { Link } from 'react-router-dom';
 import be_conf from './../../be_config';
 import axios from 'axios';
 import Auth from './../../Authcontrol';
-import logo from './../../background.jpg';
+import locale from './../../locale'
+import Lang from './../../Langcontrol'
 
 
 export default class LoginForm extends React.Component {
@@ -28,21 +29,22 @@ export default class LoginForm extends React.Component {
   render() {
     const { login, password } = this.state;
     return (
-      <div style = {{backgroundImage:"url("+{logo}+")"}}>
+      <div >
       <ValidationGroup >
         <div className={'login-header'} >
           {/* <div className={'title'}>{appInfo.title}</div> */}
 
           <img src={be_conf.server + '/logo192.png'} style={{ height: '100px' }} />
 
-          <div>Sign In to your account</div>
+          <div>{locale.Sign_In_to_your_account[Lang.getLang()]}</div>
         </div>
         <div className={'dx-field'}>
           <TextBox
             value={login}
             onValueChanged={this.loginChanged}
-            placeholder={'Email'}
+            placeholder={locale.Email[Lang.getLang()]}
             width={'100%'}
+            rtlEnabled={Lang.getLang()==='ar'}
           >
             <Validator>
               <RequiredRule message={'Login is required'} />
@@ -54,8 +56,9 @@ export default class LoginForm extends React.Component {
             mode={'password'}
             value={password}
             onValueChanged={this.passwordChanged}
-            placeholder={'Password'}
+            placeholder={locale.Password[Lang.getLang()]}
             width={'100%'}
+            rtlEnabled={Lang.getLang()==='ar'}
           >
             <Validator>
               <RequiredRule message={'Password is required'} />
@@ -63,12 +66,12 @@ export default class LoginForm extends React.Component {
           </TextBox>
         </div>
         <div className={'dx-field'}>
-          <CheckBox defaultValue={false} text={'Remember me'} />
+          <CheckBox defaultValue={false} text={locale.Remember_me[Lang.getLang()]} />
         </div>
         <div className={'dx-field'}>
           <Button
             type={'default'}
-            text={'Login'}
+            text={locale.Login[Lang.getLang()]}
             onClick={this.onLoginClick}
             width={'100%'}
           />
@@ -76,9 +79,9 @@ export default class LoginForm extends React.Component {
         {/* <div className={'dx-field'}>
           <Link to={'/recovery'} onClick={e => e.preventDefault()}>Forgot password ?</Link>
         </div> */}
-        <div className={'dx-field'}>
+        {/* <div className={'dx-field'}>
           <Button type={'normal'} text={'Create an account'} width={'100%'} />
-        </div>
+        </div> */}
       </ValidationGroup>
       </div>
     );
