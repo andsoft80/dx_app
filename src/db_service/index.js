@@ -26,14 +26,14 @@ console.log('The magic happens on port ' + port);
 
 async function getTokenFromHeader(req) {
     var token = '';
-    
+
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
         token = req.headers.authorization.split(' ')[1];
         // console.log(token)
     }
     let promise = new Promise((resolve, reject) => {
         jwt_sign.verify(token, 'secret', function (err, decoded) {
-            
+
             resolve(decoded);
 
 
@@ -193,19 +193,25 @@ function api_impl(req, res) {
 }
 
 app.post('/table/:tableName/action/:action/idName/:idName', function (req, res) {
+    var tableName = req.params.tableName;
+    var action = req.params.action;
 
-    getTokenFromHeader(req).then((value) => {
-        var now = Math.floor(Date.now() / 1000);
-        // console.log(Math.floor(Date.now() / 1000));
-        if(value===undefined){
-            res.end("need_auth");
-        }
-        else {
-            api_impl(req, res);
-            
-        }
-    });
+    if (tableName === 'Company' && action === 'get') {
+        api_impl(req, res);
+    }
+    else {
+        getTokenFromHeader(req).then((value) => {
+            var now = Math.floor(Date.now() / 1000);
+            // console.log(Math.floor(Date.now() / 1000));
+            if (value === undefined) {
+                res.end("need_auth");
+            }
+            else {
+                api_impl(req, res);
 
+            }
+        });
+    }
 
 
 
@@ -219,8 +225,8 @@ app.post('/table/:tableName/action/:action/idName/:idName', function (req, res) 
 
 app.post('/userinfo', function (req, res) {
 
-    getTokenFromHeader(req).then(function(response) {
-        
+    getTokenFromHeader(req).then(function (response) {
+
         res.end(JSON.stringify(response));
     });
 
@@ -235,7 +241,7 @@ app.post('/checkauth', function (req, res) {
         // var now = Math.floor(Date.now() / 1000);
         // console.log(Math.floor(Date.now() / 1000));
 
-        if(value===undefined){
+        if (value === undefined) {
             res.end("need_auth");
         }
         else {

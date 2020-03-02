@@ -9,11 +9,12 @@ import './style.css';
 
 export default () => (
   
-    <div>
+    <div >
       <TileView
+      
         items={homes}
         itemRender={RenderHomeItem}
-        height={390}
+        height={'100%'}
         baseItemHeight={200}
         baseItemWidth={200}
         width='100%'
@@ -23,6 +24,7 @@ export default () => (
           event =>  window.location.href='#/display-data'
           
         }
+
       />
       </div>
   

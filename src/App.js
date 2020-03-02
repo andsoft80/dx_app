@@ -22,6 +22,8 @@ import {
 import { sizes, subscribe, unsubscribe } from './utils/media-query';
 import logo from './background.jpg';
 
+
+
 const LoginContainer = ({ logIn }) => <LoginForm onLoginClick={logIn} />;
 
 const NotAuthPage = (props) => (
@@ -55,11 +57,13 @@ const AuthPage = (props) => (
 class App extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       loggedIn: false,
       screenSizeClass: this.getScreenSizeClass()
     };
+
+
 
     this.userMenuItems = [
       // {
@@ -86,7 +90,7 @@ class App extends Component {
 
       int.setState({ loggedIn: value });
     });
-    if(!Lang.getLang()){
+    if (!Lang.getLang()) {
       Lang.setLang('en');
     }
 
@@ -153,13 +157,13 @@ class App extends Component {
 
           var token = response.data;
           Auth.authenticateUser(token);
-          
+
 
 
           axios.post(be_conf.server + '/userinfo', {}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
             .then(function (response) {
               var dateStr = new Date();
-              
+
               // var utcTime = new Date(dt);
               // var dateStr = utcTime.toJSON();
               // alert(dateStr);

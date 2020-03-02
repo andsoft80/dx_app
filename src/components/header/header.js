@@ -50,9 +50,13 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroun
           <UserPanel menuItems={userMenuItems} menuMode={'context'} />
         </Button>
       </Item>
+
+      <Template name={'userPanelTemplate'}>
+        <UserPanel menuItems={userMenuItems} menuMode={'list'} />
+      </Template>
       <Item
-        location={'after'}
-        locateInMenu={'auto'}
+         location={'after'}
+        // locateInMenu={'auto'}
         menuItemTemplate={'userPanelTemplate'}
       >
         
@@ -70,7 +74,7 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroun
       </Item>
       <Item
         location={'after'}
-        locateInMenu={'auto'}
+        // locateInMenu={'auto'}
         menuItemTemplate={'userPanelTemplate'}
       >
         
@@ -85,9 +89,6 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroun
         </Button>
 
       </Item>
-      <Template name={'userPanelTemplate'}>
-        <UserPanel menuItems={userMenuItems} menuMode={'list'} />
-      </Template>
     </Toolbar>
   </header>
 );
