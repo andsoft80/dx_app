@@ -171,7 +171,7 @@ function api_impl(req, res) {
     }
     if (action === 'get') {
         id = req.body[idName];
-
+        
 
         if (id) {
             sqlStr = "select * from " + tableName + " where " + idName + " = " + id;
