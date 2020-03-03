@@ -1,4 +1,5 @@
 import { HomePage, DisplayDataPage, ProfilePage } from './pages';
+import App from './App';
 
 export default [
   {
@@ -13,4 +14,5 @@ export default [
     path: '/home',
     component: HomePage
   }
+
   ];

@@ -9,7 +9,10 @@ import { Template } from 'devextreme-react/core/template';
 import { menuPreInitPatch } from '../../utils/patches';
 import axios from 'axios';
 import Auth from './../../Authcontrol';
+import Lang from './../../Langcontrol';
 import be_conf from './../../be_config';
+import { NavLink, Redirect, Route, Router } from "react-router-dom";
+import App from './../../App'
 
 
 
@@ -21,13 +24,23 @@ class SideNavOuterToolbar extends React.Component {
       menuOpened: sizes()['screen-large'],
       temporaryMenuOpened: false,
       backgroundColor: 'white',
+      change_lang : false,
       ...this.drawerConfig
     };
 
     this.menuPatch = menuPreInitPatch(this);
   }
 
+  change_lang_f(lang){
+    alert(lang);
+    Lang.setLang(lang); this.setState({ change_lang: true})
+
+  }
   render() {
+    if (this.state.change_lang===true) {
+    return <Router>{<App {...this.props}/>}</Router>;
+    }
+
     const { menuItems, title, location, userMenuItems } = this.props;
     const {
       menuOpened,
@@ -47,6 +60,7 @@ class SideNavOuterToolbar extends React.Component {
           toggleMenu={() =>
             this.setState({ menuOpened: !this.state.menuOpened })
           }
+          change_lang = {(lang)=>{this.change_lang_f(lang)}}
           title={title}
           backgroundColor={this.state.backgroundColor}
 

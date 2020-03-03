@@ -86,10 +86,13 @@ class App extends Component {
 
 
     var int = this;
-    Auth.isUserAuthenticated().then((value) => {
+    // alert(Auth.isUserAuthenticated());
+    if(Auth.isUserAuthenticated()){
 
-      int.setState({ loggedIn: value });
-    });
+      int.setState({ loggedIn: true });
+
+    }
+    
     if (!Lang.getLang()) {
       Lang.setLang('en');
     }
@@ -163,6 +166,8 @@ class App extends Component {
           axios.post(be_conf.server + '/userinfo', {}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
             .then(function (response) {
               var dateStr = new Date();
+              // alert(JSON.stringify(response.data));
+              Auth.setExp(response.data.exp);
 
               // var utcTime = new Date(dt);
               // var dateStr = utcTime.toJSON();

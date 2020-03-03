@@ -5,19 +5,34 @@ import UserPanel from '../user-panel/user-panel';
 import './header.scss';
 import { Template } from 'devextreme-react/core/template';
 import Lang from './../../Langcontrol';
-import { NavLink } from "react-router-dom";
+
 import ReactDOM from 'react-dom';
 import App from './../../App';
+import { useHistory } from "react-router"
 
 
+// function ch_lang(lang) {
+//   let history = useHistory();
+//   Lang.setLang(lang);
+//   history.push("/home");
+//   // window.location.reload();
+
+ 
+
+// }
+
+export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroundColor,change_lang }) => {
+
+let history = useHistory();
 function ch_lang(lang) {
-  Lang.setLang(lang)
-  window.location.reload();
-
+ 
+  Lang.setLang(lang);
+  // history.push("/");
+   window.location.reload();
 
 }
 
-export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroundColor }) => (
+return (
 
   <header className={'header-component'} >
     <Toolbar className={'header-toolbar'} style={{ backgroundColor: backgroundColor }}>
@@ -67,6 +82,7 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroun
           stylingMode={'text'}
           style={{ paddingTop: 10 }}
           onClick={() => ch_lang('en')}
+           //onClick={()=>change_lang('en')}
 
         >
           en
@@ -80,6 +96,7 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroun
         
         <Button
           onClick={() => ch_lang('ar')}
+           //onClick={()=>change_lang('ar')}
           width={30}
           height={30}
           stylingMode={'text'}
@@ -91,5 +108,5 @@ export default ({ menuToggleEnabled, title, toggleMenu, userMenuItems, backgroun
       </Item>
     </Toolbar>
   </header>
-);
+)};
 
