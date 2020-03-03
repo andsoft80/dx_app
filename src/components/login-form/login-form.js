@@ -107,7 +107,7 @@ export default class LoginForm extends React.Component {
     axios.post(be_conf.server + '/table/Company/action/get/idName/CompanyID', {"CompanyID":this.CompanyID}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
       .then(function (response) {
         
-        if (response.data.recordset) {
+        if (response.data.recordset.length>0) {
           
           int.setState({
             logo: response.data.recordset[0].Logo
