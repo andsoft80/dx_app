@@ -21,7 +21,7 @@ export default class LoginForm extends React.Component {
     // const query = new URLSearchParams(this.props.location.search);
     // const company = query.get('CompanyID');
     const vars = window.location.search.substring(1).split("&");
-    this.CompanyID = 'id';
+    this.CompanyID =  null;
     
     for (var i = 0; i < vars.length; i++) {
       var pair = vars[i].split("=");
@@ -104,8 +104,10 @@ export default class LoginForm extends React.Component {
   componentDidMount() {
     
     var int = this;
+    if(this.CompanyID){
     axios.post(be_conf.server + '/table/Company/action/get/idName/CompanyID', {"CompanyID":this.CompanyID}, { headers: { "Authorization": 'Bearer ' + Auth.getToken() } })
       .then(function (response) {
+        // alert(JSON.stringify(response.data));
         
         if (response.data.recordset.length>0) {
           
@@ -114,7 +116,12 @@ export default class LoginForm extends React.Component {
           });
         }
       })
-
+    }
+    else{
+      int.setState({
+        logo: 'logo192.png'
+      });
+    }
 
   }
 
